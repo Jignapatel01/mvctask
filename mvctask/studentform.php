@@ -1,9 +1,5 @@
-   <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary mt-5 " data-bs-toggle="modal" data-bs-target="#exampleModal" >
-    Add data
-  </button>
-  
-  <!-- Modal -->
+   
+   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -14,34 +10,70 @@
         <div class="modal-body">
 <div class="h3">Student Form</div>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 
-    <div class="row">
-        <div class="col-md-6 mt-md-0 mt-3">
+     <div class="row">
+        <div class="mt-md-2 mt-3 mx-auto">
             <label>First Name</label>
             <input type="text"  name="fnm" class="form-control" required>
         </div>
-        
-        <div class="col-md-6 mt-md-0 mt-3">
+        <div class="row">   
+        <div class="mt-md-2 mt-3 mx-auto">
             <label>Last Name</label>
             <input type="text" name="lnm" class="form-control" required>
         </div>
     </div>
            
     <div class="row">
-        <div class="col-md-6 mt-md-0 mt-3">
+        <div class="mt-md-2 mt-3 mx-auto">
             <label>Email</label>
             <input type="email" name="email" class="form-control" required>
         </div>
-        <div class="col-md-6 mt-md-0 mt-3">
+      </div>
+        <div class="row">
+        <div class="mt-md-2 mt-3 mx-auto">
+            <label>Password</label>
+            <input type="password" name="pass" class="form-control" required>
+        </div>
+      </div>
+        <div class="row">
+        <div class=" mt-md-2 mt-3 mx-auto">
+            <label>Photo</label>
+            <input type="file" name="img" class="form-control" >
+        </div>
+      </div>
+        <div class="row">
+        <div class="mt-md-2 mt-3 mx-auto">
+            <label>Male : </label>
+            <input type="radio" name="gender" value="male">
+            <label>Female : </label>
+            <input type="radio" name="gender" value="female" >
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="mt-md-2 mt-3 mx-auto">
+            <label>Reading : </label>
+            <input type="checkbox" name="chk[]" value="reading">
+            <label>playing : </label>
+            <input type="checkbox" name="chk[]" value="playing" >
+            <label>Dancing : </label>
+            <input type="checkbox" name="chk[]" value="dancing">
+            <label>surffing : </label>
+            <input type="checkbox" name="chk[]" value="surffing" >
+        </div>
+
+      <div class="row">
+        <div class="mt-md-2 mt-3 mx-auto">
             <label>Phone Number</label>
-            <input type="tel" name="phn" class="form-control" required>
+            <input type="text" name="phn" class="form-control" required>
         </div>
     </div>
+
     <div class=" my-md-2 my-3">
         <label>Course</label>
 
-        <select name="course">
+        <select name="course" class="form-control">
           <option value=""> --select course--</option>
         <?php
       
@@ -55,7 +87,44 @@
         </select>
 
     </div>
-    <input type="submit" name="submit" class="btn btn-primary mt-3 " value="Submit">
+
+    <div class=" my-md-2 my-3">
+      <label>State</label>
+
+      <select name="state" class="form-control">
+        <option value=""> --select State--</option>
+      <?php
+    
+      foreach($shwstate as $shwstate1)
+          { 
+          ?>
+           <option value="<?php echo $shwstate1["state_id"];?>"> <?php echo $shwstate1["statename"]; ?> </option> 
+          <?php 
+          }
+          ?> 
+      </select>
+
+  </div>
+  <div class=" my-md-2 my-3">
+    <label>City</label>
+
+    <select name="city" class="form-control">
+      <option value="" > --select City--</option>
+    <?php
+  
+    foreach($shwcity as $shwcity1)
+        { 
+        ?>
+         <option value="<?php echo $shwcity1["city_id"];?>"> <?php echo $shwcity1["cityname"]; ?> </option> 
+        <?php 
+        }
+        ?> 
+    </select>
+
+</div>
+
+
+    <input type="submit" name="submit" class="btn btn-primary mt-3 " value="Submit" style="width:20%;margin-left: 40%;">
 
 
 
@@ -67,50 +136,6 @@
   </div>
 
 
-  <!-- student data table -->
-
-
-  <div class="col-lg-12 grid-margin stretch-card " style="margin-top:2%;">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Manage All student</h4>
-      
-        </p>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th style="width:5%;"> S_Id </th>
-              <th style="width:15%;"> FirstName </th>
-              <th style="width:15%;"> LastName </th>
-              <th style="width:20%;"> Email </th>
-              <th style="width:5%;"> Phone </th>
-              <th style="width:20%;"> Course </th>
-              
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-           foreach($join1 as $row)
-            {
-                ?>
-            <tr>
-              <td> <?php echo $row["s_id"];?> </td>
-              <td> <?php echo $row["Firstname"];?></td>
-              <td> <?php echo $row["Lastname"];?> </td>
-              <td> <?php echo $row["Email"];?> </td>
-              <td> <?php echo $row["Phone"];?> </td>
-              <td> <?php echo $row["coursename"];?> </td>
-              <td><a href="" class="btn btn-sm btn-info"><i class="bi bi-pencil"></a></td>
-              <td><a href="" class="btn btn-sm btn-danger"><i class="bi bi-trash"></a></td>
-
-                  </tr>
-           <?php
-            }
-            ?>       
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
+  
     </body>
 </html>
