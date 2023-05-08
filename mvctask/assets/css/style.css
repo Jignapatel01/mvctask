@@ -18,6 +18,17 @@ body
     z-index: 5 !important;
  
 }
+.mgside ul li 
+{
+    font-size: 25px;
+    display: block;
+}
+.mgside a
+{
+    text-decoration: none;
+    list-style-type: none;
+    
+}
 .bi-inbox,.bi-person-add,.bi-cart 
 {
     font-size: 20px !important;
