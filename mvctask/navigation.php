@@ -36,13 +36,28 @@
          if(!isset($_SESSION["s_id"]))
           {
           ?>
-                  <a class="nav-link" href="<?php echo $mainurl;?>login">Login</a>
+
+                    <a class="nav-link" href="<?php echo $mainurl;?>login">Login</a>
            <?php
           }
           else
           {
           ?>
-              <a class="nav-link" href="<?php echo $mainurl;?>?logout-here" class="btn btn-lg btn-danger text-white">Logout</a>
+        <li class="navbar-nav dropdown">
+          <a href="<?php echo $mainurl;?>?logout-here" class=" nav-link text-success dropdown-toggle" data-bs-toggle="dropdown">Welcome: <?php echo $_SESSION["fnm"];?></a>
+      
+          <ul class="dropdown-menu p-4" style="width:200px;">
+        <!-- <li><a href="" class="text-success">Welcome: <?php echo $_SESSION["fnm"];?></a></li> -->
+        <li><a href="">Manage Profile</a></li>
+        <li><a href="">Manage Notification</a></li>
+        <li><a href="">Manage Orders</a></li>        
+        <li><a href="<?php echo $mainurl;?>change-password">Chanage Password</a></li>
+        <li><a href="">Delete Account</a></li>
+        <li><a href="<?php echo $mainurl;?>?logout-here">Logout</a></li>
+        <ul>
+          </li>        
+
+
             <?php
           }
           ?>

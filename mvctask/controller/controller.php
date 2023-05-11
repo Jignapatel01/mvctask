@@ -1,6 +1,9 @@
 <?php
 // error_reporting(0);
 require_once("model/model.php");
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 class controller extends model
 {
@@ -32,7 +35,7 @@ class controller extends model
         if(isset($_POST["log"]))
         {
             $em=$_POST["email"];
-            $pass=$_POST["pass"];
+            $pass=base64_encode($_POST["pass"]);
             $log=$this->userlogin('t_student',$em,$pass);
             if($log)
             {
@@ -66,6 +69,36 @@ class controller extends model
         
         }
 
+        //chnage password
+        if(isset($_POST["chngpass"]))
+        {
+            $id=$_SESSION["s_id"];
+            $opass=base64_encode($_POST["opass"]);
+            $npass=base64_encode($_POST["npass"]);
+            $cpass=base64_encode($_POST["cpass"]);
+            $chngpass=$this->chngpassword('t_student',$opass,$npass,$cpass,'s_id',$id);
+            if($chngpass)
+            {
+                // unset($_SESSION["s_id"]);
+                // unset($_SESSION["email"]);
+                // unset($_SESSION["fnm"]);
+                // session_destroy();
+                echo "<script>
+                    alert('Your Password successfully changed')
+                    window.location='login';
+                    </script>";
+            }
+            else
+            {   
+                echo "<script>
+                alert('Your new password and confirm password is not matched try again!')
+                window.location='change-password';
+                </script>";
+        
+
+            }
+
+        }
 
 
     //student insert data 
@@ -75,7 +108,7 @@ class controller extends model
         $fnm=$_POST["fnm"];
         $lnm=$_POST["lnm"];
         $email=$_POST["email"];
-        $pass=$_POST["pass"];
+        $pass=base64_encode($_POST["pass"]);
         
         //upload image or file
         $tmp_name=$_FILES["img"]["tmp_name"];
@@ -103,6 +136,94 @@ class controller extends model
         }
     }
 
+    //forget password logic
+    if(isset($_POST["frgpwd"]))
+    {
+        require_once("PHPMailer/PHPMailer.php");
+        require_once("PHPMailer/SMTP.php");
+        require_once("PHPMailer/Exception.php");
+        
+        $em=$_POST["email"];
+        
+        try 
+        {
+
+             ob_start();    
+             error_reporting(0);
+            $mail = new PHPMailer(true);
+            $mail->SMTPDebug = true;                                     //Enable verbose debug output
+            $mail->isSMTP();                                            //Send using SMTP
+            $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+            $mail->Username   = 'jigna434@gmail.com';                     //SMTP username
+            $mail->Password   = 'tmkhzxihfpumzbwv';                               //SMTP password
+            $mail->SMTPSecure = 'TLS';                                //Enable implicit TLS encryption
+            $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        
+            //Recipients
+            $mail->setFrom($_POST["email"], 'Mail sending');
+            $mail->addAddress($_POST["email"], 'Forget Password');     //Add a recipient                                 //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        
+            //Content
+            $mail->isHTML(true); //Set email format to HTML
+            $mail->Subject = 'Contact with Us email sending data';
+            $chk=$this->forgetpassword('t_student','email',$em);
+            $mail->Body="The password is :".$chk;
+            $mail->send();
+
+          if($chk)
+            {
+              echo "<script>
+              alert('we will successfully send your password in your email please checked and logged in again!')
+              window.location='login';
+              </script>";
+            }
+            else 
+            {
+                echo "<script>
+                alert('This email does not exist try with another registered email Id')
+                window.location='forget-password';
+                </script>";
+            }
+         
+        } 
+        catch(Exception $e) 
+        {
+            echo "Message could not be sent. Mailer Error:{$mail->ErrorInfo}";
+        }
+    }
+
+
+    //Update profile 
+    if(isset($_POST["update"]))
+    {
+        $id=$_SESSION["s_id"];
+         
+        //upload image or file
+        $tmp_name=$_FILES["img"]["tmp_name"];
+        $path="upload/students/".$_FILES["img"]["name"];
+        move_uploaded_file($tmp_name,$path);
+        $email=$_POST["email"];
+        $phone=$_POST["phn"];
+        $hb=implode(",",$_POST["chk"]);
+        $course=$_POST["course"];
+        $st=$_POST["state"];
+        $ct=$_POST["city"];
+        
+        $chk=$this->updatedata('t_student',$path,$email,$phone,$hb,$course,$st,$ct,'s_id',$id);
+        if($chk)
+        {
+            echo "<script> 
+            alert('Record updated successfully')
+            window.location='manage-profile';
+            </script>";
+        }
+    }
+
+  
+
+
+
     if(isset($_SERVER['PATH_INFO']))
     {
         switch($_SERVER['PATH_INFO'])
@@ -121,6 +242,21 @@ class controller extends model
                 require_once('login.php');
                 require_once('footer.php');
                 break;
+
+            case '/forget-password':
+                require_once('index.php');
+                require_once('navigation.php');
+                require_once('frgtpassword.php');
+                require_once('footer.php');
+                break;
+
+            case '/change-password':
+                require_once('index.php');
+                require_once('navigation.php');
+                require_once('changepassword.php');
+                require_once('footer.php');
+                break;
+    
 
             case '/manage-profile':
                 require_once('index.php');

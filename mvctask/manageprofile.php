@@ -15,9 +15,10 @@
         <li><a href="" class="text-success">Welcome: <?php echo $_SESSION["fnm"];?></a></li>
         <li><a href="">Manage Profile</a></li>
         <li><a href="">Manage Notification</a></li>
-        <li><a href="">Manage Orders</a></li>        
+        <li><a href="">Manage Orders</a></li>
+        <li><a href="<?php echo $mainurl;?>/change-password">Chnage Password</a></li>        
         <li><a href="">Delete Account</a></li>
-        <li><a href="<?php echo $mainurl;?>?logout-here">Logout</a></li>
+        <li><a href="<?php echo $mainurl;?>?logout-here">Logout</a></li><ul>
         
 
 </div>
@@ -147,19 +148,10 @@
          </select> 
          </div>
     </div>
-
-
-
-
-        
-      
-      
-   <input type="submit" name="log" class="btn btn-primary mt-3 " value="Update Profile" style="width:20%;margin-left: 40%;">
+     
+   <input type="submit" name="update" class="btn btn-primary mt-3 " value="Update Profile" style="width:20%;margin-left: 40%;">
    <br>   
-   <div class=" col-md-10 mt-md-2 mt-3 mx-auto">
-   <a href="">Forgot Password</a><br>
-    Don't have an account<a href="">Registered</a>
-</div>
+
    </div>
 </form>
         </div>
